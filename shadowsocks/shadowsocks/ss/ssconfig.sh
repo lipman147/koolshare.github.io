@@ -1775,31 +1775,32 @@ set_ulimit(){
 	ulimit -n 16384
 }
 
-remove_dnsmasq_restart_delay(){
-	# 为避免90秒内用户再次重启插件，先清理一次之前的90秒后重启dnsmasq任务
-	#cru d ss_dnsmasq_restart >/dev/null 2>&1
-	sed -i '/ss_dnsmasq_restart/d' /var/spool/cron/crontabs/* >/dev/null 2>&1
-}
-
-set_dnsmasq_restart_delay(){
-	# 插件启动完成的90秒后重启一次dnsmasq
-	
-	#echo `date "+%Y-%m-%d %H:%M:%S"`
-	second_now=`date +%s`
-	second_future=`expr $second_now + 90`
-	
-	#date_future=`date -d @$second_future "+%Y-%m-%d %H:%M:%S"`
-	day_future=`date -d @$second_future "+%d"`
-	hour_future=`date -d @$second_future "+%H"`
-	min_future=`date -d @$second_future "+%M"`
-	
-	#echo date_future: $date_future
-	#echo day_future: $day_future
-	#echo hour_future: $hour_future
-	#echo min_future: $min_future
-
-	cru a ss_dnsmasq_restart "$min_future $hour_future $day_future * * /koolshare/scripts/ss_dnsmasq_restart_delay.sh restart"
-}
+# 4.0.2后删除此功能，因为在v2ray服务器填域名时，删除ss_host.conf会造成解析错误而导致问题
+# remove_dnsmasq_restart_delay(){
+# 	# 为避免90秒内用户再次重启插件，先清理一次之前的90秒后重启dnsmasq任务
+# 	#cru d ss_dnsmasq_restart >/dev/null 2>&1
+# 	sed -i '/ss_dnsmasq_restart/d' /var/spool/cron/crontabs/* >/dev/null 2>&1
+# }
+# 
+# set_dnsmasq_restart_delay(){
+# 	# 插件启动完成的90秒后重启一次dnsmasq
+# 	
+# 	#echo `date "+%Y-%m-%d %H:%M:%S"`
+# 	second_now=`date +%s`
+# 	second_future=`expr $second_now + 90`
+# 	
+# 	#date_future=`date -d @$second_future "+%Y-%m-%d %H:%M:%S"`
+# 	day_future=`date -d @$second_future "+%d"`
+# 	hour_future=`date -d @$second_future "+%H"`
+# 	min_future=`date -d @$second_future "+%M"`
+# 	
+# 	#echo date_future: $date_future
+# 	#echo day_future: $day_future
+# 	#echo hour_future: $hour_future
+# 	#echo min_future: $min_future
+# 
+# 	cru a ss_dnsmasq_restart "$min_future $hour_future $day_future * * /koolshare/scripts/ss_dnsmasq_restart_delay.sh restart"
+# }
 
 remove_ss_reboot_job(){
 	if [ -n "`cru l|grep ss_reboot`" ]; then
@@ -1966,7 +1967,7 @@ disable_ss(){
 	dbus remove ss_basic_server_ip
 	nvram commit
 	kill_process
-	remove_dnsmasq_restart_delay
+	#remove_dnsmasq_restart_delay
 	remove_ss_trigger_job
 	remove_ss_reboot_job
 	restore_conf
@@ -1988,7 +1989,7 @@ apply_ss(){
 	dbus set dns2socks=0
 	nvram commit
 	kill_process
-	remove_dnsmasq_restart_delay
+	#remove_dnsmasq_restart_delay
 	remove_ss_trigger_job
 	remove_ss_reboot_job
 	restore_conf
@@ -2028,7 +2029,7 @@ apply_ss(){
 	set_ss_trigger_job
 	# post-start
 	ss_post_start
-	set_dnsmasq_restart_delay
+	#set_dnsmasq_restart_delay
 	echo_date ------------------------ 【科学上网】 启动完毕 ------------------------
 }
 

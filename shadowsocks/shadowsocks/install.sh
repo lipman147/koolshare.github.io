@@ -211,6 +211,12 @@ dbus set softcenter_module_shadowsocks_home_url=Main_Ss_Content.asp
 dbus set ss_basic_v2ray_version="v3.35"
 dbus set ss_basic_v2ray_date="20180809"
 
+# 删除该定时计划，以便升级后不影响解析（4.0.1）
+SS_VERSION_OLD=`dbus get ss_basic_version_local`
+if [ "$SS_VERSION_OLD" == "4.0.1" ];then
+	sed -i '/ss_dnsmasq_restart/d' /var/spool/cron/crontabs/* >/dev/null 2>&1
+fi
+
 echo_date 一点点清理工作...
 rm -rf /tmp/shadowsocks* >/dev/null 2>&1
 dbus set ss_basic_install_status="0"
