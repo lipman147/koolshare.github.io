@@ -82,12 +82,8 @@ function detect(){
 	if(fw_version < 7.2){ //固件版本过低，不兼容
 		hide_elem();
 		E("warn_msg_1").style.display = "";
-		$('#warn_msg_1').html('<h2><font color="#FF9900">错误！</font></h2><h2>【科学上网】插件不可用！因为你的固件版本低于X7.2！</h2><h2>请前往<a href="http://koolshare.cn/forum-96-1.html" target="_blank"><u><em>【koolshare论坛】</em></u></a>下载并更新最新固件！</h2>');
+		$('#warn_msg_1').html('<h2><font color="#FF9900">错误！</font></h2><h2>【科学上网】插件不可用！因为你的固件版本低于X7.2！</h2><h2>请更新最新固件！</h2>');
 	}
-	//if(db_ss["ss_basic_use_kcp"] == 1){
-	//	E("warn_msg_2").style.display = "";
-	//	$('#warn_msg_2').html('<h2><font color="#FF9900">提醒：</font>你开启了KCP加速，建议挂载虚拟内存以保证kcptun程序运行稳定！</h2>');
-	//}
 }
 
 function hook_event() {
@@ -137,24 +133,6 @@ function pop_111() {
 	});
 }
 
-function pop_changelog() {
-	require(['/res/layer/layer.js'], function(layer) {
-		layer.open({
-			type: 2,
-			shade: .7,
-			//scrollbar: 0,
-			title: '科学上网插件 - 更新日志',
-			area: ['950px', '600px'],
-			fixed: true, //不固定
-			maxmin: true,
-			shadeClose: 1,
-			id: 'LAY_layuipro1',
-			btnAlign: 'c',
-			content: 'https://koolshare.ngrok.wang/shadowsocks/Changelog.txt',
-		});
-	});
-}
-
 function pop_help() {
 	require(['/res/layer/layer.js'], function(layer) {
 		layer.open({
@@ -174,7 +152,7 @@ function pop_help() {
 				<b>梅林固件 - 科学上网插件 - ' + db_ss["ss_basic_version_local"] + '</b><br><br>\
 				本插件是支持<a target="_blank" href="https://github.com/shadowsocks/shadowsocks-libev" ><u>SS</u></a>、<a target="_blank" href="https://github.com/shadowsocksrr/shadowsocksr-libev"><u>SSR</u></a>、<a target="_blank" href="http://firmware.koolshare.cn/binary/koolgame"><u>KoolGame</u></a>、<a target="_blank" href="https://github.com/v2ray/v2ray-core"><u>V2Ray</u></a>四种客户端的科学上网、游戏加速工具。<br>\
 				本插件仅支持Merlin AM380 2.6.36.4内核的固件，请不要用于其它固件安装。<br>\
-				使用本插件有任何问题，可以前往<a style="color:#e7bd16" target="_blank" href="https://github.com/koolshare/koolshare.github.io/issues"><u>github的issue页面</u></a>反馈~<br><br>\
+				使用本插件有任何问题，可以前往<a style="color:#e7bd16" target="_blank" href="https://github.com/hq450/fancyss/issues"><u>github的issue页面</u></a>反馈~<br><br>\
 				● SS/SSR一键脚本：<a style="color:#e7bd16" target="_blank" href="https://github.com/onekeyshell/kcptun_for_ss_ssr/tree/master"><u>一键安装KCPTUN for SS/SSR on Linux</u></a><br>\
 				● koolgame一键脚本：<a style="color:#e7bd16" target="_blank" href="https://github.com/clangcn/game-server"><u>一键安装koolgame服务器端脚本，完美支持nat2</u></a><br>\
 				● V2Ray一键脚本：<a style="color:#e7bd16" target="_blank" href="https://233blog.com/post/17/"><u>V2Ray 搭建和优化详细图文教程</u></a><br>\
@@ -1922,9 +1900,9 @@ function updatelist(action) {
 
 function version_show() {
 	$.ajax({
-		url: 'https://koolshare.ngrok.wang/shadowsocks/config.json.js',
+		url: 'https://raw.githubusercontent.com/hq450/fancyss/master/fancyss_arm/config.json.js',
 		type: 'GET',
-		dataType: 'jsonp',
+		dataType: 'json',
 		success: function(res) {
 			if (typeof(res["version"]) != "undefined" && res["version"].length > 0) {
 				if (res["version"] == db_ss["ss_basic_version_local"]) {
@@ -2299,7 +2277,7 @@ function toggle_func() {
 		});
 	$("#update_log").click(
 		function() {
-			window.open("https://github.com/koolshare/koolshare.github.io/blob/acelan_softcenter_ui/shadowsocks/Changelog.txt");
+			window.open("https://github.com/hq450/fancyss/blob/master/fancyss_arm/Changelog.txt");
 		});
 	$("#log_content2").click(
 		function() {
@@ -3060,7 +3038,7 @@ function set_cron(action) {
 															</a>
 														</div>
 														<div style="display:table-cell;float: left;margin-left:270px;position: absolute;padding: 5.5px 0px;">
-															<a type="button" class="ss_btn" target="_blank" href="https://github.com/koolshare/koolshare.github.io/blob/acelan_softcenter_ui/shadowsocks/Changelog.txt">更新日志</a>
+															<a type="button" class="ss_btn" target="_blank" href="https://github.com/hq450/fancyss/blob/master/fancyss_arm/Changelog.txt">更新日志</a>
 														</div>
 														<div style="display:table-cell;float: left;margin-left:350px;position: absolute;padding: 5.5px 0px;">
 															<a type="button" class="ss_btn" href="javascript:void(0);" onclick="pop_help()">插件帮助</a>
@@ -3803,7 +3781,7 @@ function set_cron(action) {
 													<td>
 														<textarea placeholder="# 填入自定义的dnsmasq设置，一行一个
 # 例如hosts设置：
-address=/koolshare.cn/2.2.2.2
+address=/weibo.com/2.2.2.2
 # 防DNS劫持设置：
 bogus-nxdomain=220.250.64.18" rows="12" style="width:99%; font-family:'Lucida Console'; font-size:12px;background:#475A5F;color:#FFFFFF;" id="ss_dnsmasq" name="ss_dnsmasq" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" title=""></textarea>
 													</td>
@@ -4370,7 +4348,7 @@ taobao.com
 													<th id="gfw_nu1" width="35%">gfwlist域名数量</th>
 													<td id="gfw_nu2">
 															<% nvram_get("ipset_numbers"); %>&nbsp;条，最后更新版本：
-															<a href="https://github.com/koolshare/koolshare.github.io/blob/acelan_softcenter_ui/maintain_files/gfwlist.conf" target="_blank">
+															<a href="https://github.com/hq450/fancyss/blob/master/rules/gfwlist.conf" target="_blank">
 																<i><% nvram_get("update_ipset"); %></i>
 														</a>
 													</td>
@@ -4380,7 +4358,7 @@ taobao.com
 												<td id="chn_nu2">
 													<p>
 														<% nvram_get("chnroute_numbers"); %>&nbsp;行，最后更新版本：
-														<a href="https://github.com/koolshare/koolshare.github.io/blob/acelan_softcenter_ui/maintain_files/chnroute.txt" target="_blank">
+														<a href="https://github.com/hq450/fancyss/blob/master/rules/chnroute.txt" target="_blank">
 															<i><% nvram_get("update_chnroute"); %></i>
 														</a>
 													</p>
@@ -4391,7 +4369,7 @@ taobao.com
 													<td id="cdn_nu2">		
 														<p>		
 														<% nvram_get("cdn_numbers"); %>&nbsp;条，最后更新版本：		
-															<a href="https://github.com/koolshare/koolshare.github.io/blob/acelan_softcenter_ui/maintain_files/cdn.txt" target="_blank">		
+															<a href="https://github.com/hq450/fancyss/blob/master/rules/cdn.txt" target="_blank">		
 																<i><% nvram_get("update_cdn"); %></i>		
 															</a>		
 														</p>		
